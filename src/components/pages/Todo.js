@@ -62,7 +62,7 @@ const Todo = () => {
 				dispatch(updateTasks(response.data.task))
 				setLoading({ ...loading, create: false });
 			} catch (error) {
-				console.log(error);
+
 				toast.error(error.response.data);
 			}
 		} else {
@@ -236,7 +236,7 @@ const Todo = () => {
 						</div>
 						: <div
 							className={` p-2  lg:border-y-2  lg:border-b-2  rounded-b-md lg:bg-slate-50 `}>
-							{allTasks.length !== 0
+							{allTasks
 								? allTasks.map((value, index) => {
 									return (
 										<ShowTodo

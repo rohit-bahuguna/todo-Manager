@@ -2,7 +2,7 @@ import axios from 'axios';
 const baseUrl = `${process.env.REACT_APP_API_URL}/todo`;
 
 export const createTask = async task => {
-	console.log(task);
+
 	const url = `${baseUrl}/create`;
 	return await axios.post(
 		url,

@@ -18,7 +18,7 @@ const LogOut = () => {
 			localStorage.setItem('status', false)
 			dispatch(logout())
 
-			navigate('/signin');
+			navigate('/');
 
 		} catch (error) {
 			toast.error(error.response.data);

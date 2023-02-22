@@ -12,6 +12,9 @@ import Profile from "./components/user/Profile"
 import ProtectedRoute from './ProtectedRoute';
 import Home from './components/Home';
 import PageNotFound from './components/comman/PageNotFound';
+import VerifyUser from './components/user/VerifyUser';
+import ForgetPassword from './components/user/ForgetPassword';
+import ForgetPasswordForm from './components/user/ForgetPasswordForm';
 
 
 
@@ -30,7 +33,10 @@ function App() {
 
 							<Route path="/" element={<SignIn />} />
 							<Route path="/login" element={<Login />} />
-							<Route path="/signin" element={<SignIn />} />
+							<Route path='/verify/:token' element={<VerifyUser />} />
+							<Route path='/forgetpasswordmail' element={<ForgetPassword />} />
+							<Route path='forgetpassword/:token' element={<ForgetPasswordForm />} />
+							{/* <Route path="/signin" element={<SignIn />} /> */}
 							<Route path="*" element={<PageNotFound />} />
 							<Route element={<ProtectedRoute />} >
 								<Route path="/dashboard" element={<Todo />} />

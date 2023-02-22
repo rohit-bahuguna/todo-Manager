@@ -4,7 +4,8 @@ const initialState = {
         name: '',
         email: '',
         totalTasks: '',
-        loginStatus: false
+        loginStatus: false,
+        verified: false
     }
 }
 
@@ -14,10 +15,10 @@ export const userSlice = createSlice({
 
     reducers: {
         login: (state, action) => {
-            const { payload: { name, email } } = action
+            const { payload: { name, email, verified } } = action
 
-            console.log(action);
-            state.user = { ...state, name, email, loginStatus: true }
+            console.log();
+            state.user = { ...state, name, email, verified, loginStatus: true }
         },
         logout: (state) => {
             state.user = { ...initialState }
@@ -28,11 +29,14 @@ export const userSlice = createSlice({
         setDataAfterRefresh: (state, action) => {
             const { payload: { name, email, loginStatus } } = action
             state.user = { ...state, name, email, loginStatus }
+        },
+        setVerificationStatus: (state, action) => {
+            state.user.verified = action.payload
         }
     }
 }
 )
 
-export const { login, logout, setTotalTask, setDataAfterRefresh } = userSlice.actions
+export const { login, logout, setTotalTask, setDataAfterRefresh, setVerificationStatus } = userSlice.actions
 
 export default userSlice.reducer

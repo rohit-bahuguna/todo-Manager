@@ -9,11 +9,11 @@ const Header = () => {
 	const navigate = useNavigate();
 	const name = localStorage.getItem('name')
 	const userLoginStatus = useSelector((state) => state.userReducer.user.loginStatus)
-	console.log(userLoginStatus, "srarus");
+	
 	return (
 		<div
 			className={`flex flex-row  w-screen  max-h-16 justify-between content-center gap-x-{6}  p-2 bg-slate-900 text-sky-500 m-0 `}>
-			<Link to={userLoginStatus === true ? "/dashboard" : '/signin'}>
+			<Link to={userLoginStatus === true ? "/dashboard" : '/'}>
 				<img
 					src="/logo.png"
 					alt="logo"

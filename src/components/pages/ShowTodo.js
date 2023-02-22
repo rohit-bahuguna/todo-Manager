@@ -35,7 +35,7 @@ const ShowTodo = ({ task, setShowModel, initialErrors, setTodoModel }) => {
 		if (success) {
 			try {
 				const updatedData = await updateAtask(taskData);
-				console.log(updatedData.data);
+			
 				toast.success(updatedData.data.message);
 				setLoading(false);
 				setTaskData({ ...taskData, edited: false });

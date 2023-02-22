@@ -38,16 +38,18 @@ const SignIn = () => {
 			signIn(userData)
 				.then(response => {
 					toast.success(response.data.message);
-					console.log(response.data);
+
 					setLoading(false);
 					localStorage.setItem('name', response.data.user.name)
 					localStorage.setItem('email', response.data.user.email)
 					localStorage.setItem('status', response.data.success)
+					dispatch(login(response.data.user))
+				
 					setTimeout(() => {
 
 						navigate(`/dashboard`);
 					}, 1000);
-					dispatch(login(response.data.user))
+
 
 				})
 				.catch(error => {
@@ -62,16 +64,6 @@ const SignIn = () => {
 		}
 	};
 
-
-	useEffect(() => {
-		if (loggedInUserData.loginStatus) {
-			navigate('/dashboard')
-		}
-		const name = localStorage.getItem('name')
-		const email = localStorage.getItem('email')
-		const loginStatus = localStorage.getItem('status')
-		dispatch(setDataAfterRefresh({ name, email, loginStatus }))
-	}, [])
 
 	return (
 		<div className={`flex  justify-center my-5 mx-3`}>
@@ -124,6 +116,7 @@ const SignIn = () => {
 						: ''}
 				</label>
 
+				<Link to='forgetpasswordmail'><p>forget password ?</p></Link>
 				{loading
 					? <div className=" flex justify-center">
 						<Loader message={'signing in'} />

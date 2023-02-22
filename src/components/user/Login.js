@@ -43,6 +43,7 @@ const Login = () => {
 				localStorage.setItem('email', response.data.user.email)
 				localStorage.setItem('status', response.data.success)
 				dispatch(login(response.data.user))
+				
 				setLoading(false);
 				setTimeout(() => {
 					navigate('/dashboard');
@@ -164,9 +165,9 @@ const Login = () => {
 						</button>
 						<p className={`text-xs text-center`}>
 							Already have an account{' '}
-							<Link to="/signin">
-								<span className={`text-sky-400`}>Click Here</span>
-							</Link>
+
+							<span onClick={() => navigate(-1)} className={`text-sky-700 hover:cursor-pointer hover:text-sky-500`}>Click Here</span>
+
 						</p>
 					</div>
 					: <div className=" flex justify-center">

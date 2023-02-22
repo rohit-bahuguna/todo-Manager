@@ -10,7 +10,7 @@ const ProtectedRoute = () => {
     const userLoginStatus = useSelector(state => state.userReducer.user.loginStatus)
     useEffect(() => {
         if (userLoginStatus === false) {
-            navigate('/signin')
+            navigate('/')
         }
     }, [])
 
