@@ -44,7 +44,7 @@ const SignIn = () => {
 					localStorage.setItem('email', response.data.user.email)
 					localStorage.setItem('status', response.data.success)
 					dispatch(login(response.data.user))
-				
+
 					setTimeout(() => {
 
 						navigate(`/dashboard`);
@@ -95,7 +95,7 @@ const SignIn = () => {
 
 				{/* Password input section */}
 
-				<label className="block">
+				<label className="block ">
 					<span className="after:content-['*'] after:ml-0.5 after:text-red-500 block text-sm font-medium text-slate-700">
 						Password
 					</span>
@@ -115,8 +115,7 @@ const SignIn = () => {
 						</p>
 						: ''}
 				</label>
-
-				<Link to='forgetpasswordmail'><p>forget password ?</p></Link>
+				<Link to='forgetpasswordmail'><p className='text-sm text-sky-700 hover:text-sky-500'>forget password ?</p></Link>
 				{loading
 					? <div className=" flex justify-center">
 						<Loader message={'signing in'} />
@@ -130,7 +129,7 @@ const SignIn = () => {
 						<Link to="/login">
 							<button
 								className={`  mt-3 self-center  bg-sky-500 hover:bg-sky-700 hover:text-white block w-28 h-10 rounded-full  `}>
-								Login
+								Signup
 							</button>
 						</Link>
 					</div>}

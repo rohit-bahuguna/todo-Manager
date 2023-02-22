@@ -97,9 +97,9 @@ const ForgetPassword = () => {
                     ? <div className=" flex justify-center">
                         <Loader message={'Sending mail'} />
                     </div>
-                    : <div className={`flex justify-between`}>
+                    : <div className={`flex justify-center`}>
                         <button
-                            className={`  mt-3 self-center  bg-sky-500 hover:bg-sky-700 hover:text-white block w-28 h-10 rounded-full  `}
+                            className={`  mt-3   bg-sky-500 hover:bg-sky-700 hover:text-white block w-32 h-10 rounded-full `}
                             onClick={forgetUserPassword}>
                             Send Email
                         </button>
