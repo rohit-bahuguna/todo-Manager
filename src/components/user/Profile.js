@@ -5,27 +5,23 @@ import { sendVerificationMail } from '../../utils/userAPI';
 
 import LogOut from './LogOut';
 
-
-
 const Profile = () => {
-	const userData = useSelector(state => state.userReducer.user)
+	const userData = useSelector(state => state.userReducer.user);
 
-	const name = localStorage.getItem('name')
-	const email = localStorage.getItem('email')
+	const name = localStorage.getItem('name');
+	const email = localStorage.getItem('email');
 
 	const sendEmail = async () => {
 		try {
 			const response = await sendVerificationMail();
 			console.log(response);
-			toast.success(response.data.message)
+			toast.success(response.data.message);
 		} catch (error) {
-			toast.error(error.message)
+			toast.error(error.response.data);
 		}
-	}
-
+	};
 
 	console.log(userData.verified);
-
 
 	return (
 		<div className={`flex justify-center my-5`}>
@@ -39,7 +35,13 @@ const Profile = () => {
 				<h3>
 					Total Task : {userData.totalTasks}
 				</h3>
-				{!userData.verified ? <button onClick={sendEmail} className={` mt-3 self-center text-md  bg-green-500 hover:bg-green-700 hover:text-white block w-42 px-2 h-10 rounded-full  `} >Verify Account</button> : 'Your Account is verified'}
+				{!userData.verified
+					? <button
+							onClick={sendEmail}
+							className={` mt-3 self-center text-md  bg-green-500 hover:bg-green-700 hover:text-white block w-42 px-2 h-10 rounded-full  `}>
+							Verify Account
+						</button>
+					: 'Your Account is verified'}
 				<LogOut />
 			</div>
 		</div>

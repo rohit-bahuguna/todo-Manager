@@ -77,8 +77,8 @@ const ForgetPasswordForm = () => {
                     navigate('/')
                 }, 5000)
             } catch (error) {
-                console.log(error);
-                toast.error(error.message)
+              
+                toast.error(error.response.data)
                 setLoading(false)
             }
         } else {
