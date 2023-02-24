@@ -41,34 +41,38 @@ export const getUserData = async () => {
 	});
 };
 
-
-
-
 export const sendVerificationMail = async () => {
-	const url = `${baseUrl}/mailverification`
+	const url = `${baseUrl}/mailverification`;
 	return await axios.get(url, {
 		withCredentials: true
-	})
-}
+	});
+};
 
-
-export const Verify = async (token) => {
-	const url = `${baseUrl}/verify/${token}`
+export const Verify = async token => {
+	const url = `${baseUrl}/verify/${token}`;
 	return await axios.get(url, {
 		withCredentials: true
-	})
-}
+	});
+};
 
-export const sendForgetPasswordEmail = async (email) => {
-	const url = `${baseUrl}/forgetpasswordmail`
-	return await axios.post(url, { email }, {
-		withCredentials: true
-	})
-}
+export const sendForgetPasswordEmail = async email => {
+	const url = `${baseUrl}/forgetpasswordmail`;
+	return await axios.post(
+		url,
+		{ email },
+		{
+			withCredentials: true
+		}
+	);
+};
 
-export const forgetUserPassword = async (token, password) => {
-	const url = `${baseUrl}/forgetuserpassword/${token}`
-	return await axios.post(url, { password }, {
-		withCredentials: true
-	})
-}
+export const forgetUserPassword = async (token, id, password) => {
+	const url = `${baseUrl}/forgetuserpassword/${token}/${id}`;
+	return await axios.post(
+		url,
+		{ password },
+		{
+			withCredentials: true
+		}
+	);
+};

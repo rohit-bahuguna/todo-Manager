@@ -1,20 +1,22 @@
 
 
-import React, { useImperativeHandle, useState } from 'react'
+import React, { useEffect, useImperativeHandle, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast, ToastContainer } from 'react-toastify'
 import { forgetUserPassword } from '../../utils/userAPI'
 import Loader from '../comman/Loader'
 
 const ForgetPasswordForm = () => {
-    const { token } = useParams()
+    const { token , id } = useParams()
     const [userPassword, setUserPassword] = useState({
         password: '',
         confirmPassword: ''
+        
     })
     const initialErrors = {
         passwordError: { status: false, error: '' },
-        confirmPasswordError: { status: false, error: '' }
+        confirmPasswordError: { status: false, error: '' },
+        resetPasswordError : {status : false , error: ''}
     }
     const [success, setSuccess] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -69,7 +71,7 @@ const ForgetPasswordForm = () => {
         if (success) {
             setLoading(true)
             try {
-                const response = await forgetUserPassword(token, userPassword.password)
+                const response = await forgetUserPassword(token, id , userPassword.password)
                 setLoading(false)
                 toast.success(response.data.message)
                 setSuccess(true)
@@ -77,9 +79,15 @@ const ForgetPasswordForm = () => {
                     navigate('/')
                 }, 5000)
             } catch (error) {
-              
-                toast.error(error.response.data)
-                setLoading(false)
+                 setLoading(false)
+             
+                toast.error("reset password link expire")
+                
+                setTimeout(() => {
+                    navigate('/')
+                },3000)
+               
+               
             }
         } else {
             setPasswordError({ ...passwordError, ...errors })
@@ -87,6 +95,12 @@ const ForgetPasswordForm = () => {
         }
 
     }
+
+   
+
+
+
+
     return (
         <div className={`flex  justify-center my-5 mx-3`}>
             <ToastContainer />
