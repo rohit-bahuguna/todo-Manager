@@ -6,10 +6,7 @@ import { sendVerificationMail } from '../../utils/userAPI';
 import LogOut from './LogOut';
 
 const Profile = () => {
-	const userData = useSelector(state => state.userReducer.user);
-
-	const name = localStorage.getItem('name');
-	const email = localStorage.getItem('email');
+	const userData = useSelector(state => state.user.data);
 
 	const sendEmail = async () => {
 		try {
@@ -24,13 +21,13 @@ const Profile = () => {
 	console.log(userData.verified);
 
 	return (
-		<div className={`flex justify-center my-5`}>
+		<div className={`flex justify-center my-5 `}>
 			<div className={'border-2 rounded-lg flex flex-col gap-5 p-8'}>
 				<h2>
-					Name : {name}
+					Name : {userData.name}
 				</h2>
 				<h3>
-					Email : {email}
+					Email : {userData.email}
 				</h3>
 				<h3>
 					Total Task : {userData.totalTasks}

@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { logIn } from '../../utils/userAPI';
 import { validateUserData } from './ValidateData';
 import { ToastContainer, toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Loader from '../comman/Loader';
-
-import { login } from "../../redux/userSlice"
-import { useDispatch } from 'react-redux';
+import { login } from '../../redux/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Login = () => {
-	const dispatch = useDispatch()
+	const isUserLoggedIn = useSelector(state => state.user.data.loginStatus);
+	const dispatch = useDispatch();
 	const [userData, setUserData] = useState({
 		name: '',
 		email: '',
@@ -25,7 +25,9 @@ const Login = () => {
 	};
 	const [loading, setLoading] = useState(false);
 	const [formErrors, setFormErrors] = useState(initialErrors);
+
 	const navigate = useNavigate();
+
 	const getUserData = e => {
 		setUserData({ ...userData, [e.target.name]: e.target.value });
 		setFormErrors({ ...initialErrors });
@@ -39,15 +41,12 @@ const Login = () => {
 				const response = await logIn(userData);
 
 				toast.success(response.data.message);
-				localStorage.setItem('name', response.data.user.name)
-				localStorage.setItem('email', response.data.user.email)
-				localStorage.setItem('status', response.data.success)
-				dispatch(login(response.data.user))
-				
-				setLoading(false);
+				dispatch(login(response.data.user));
+
 				setTimeout(() => {
-					navigate('/dashboard');
+					navigate(`/dashboard`);
 				}, 1000);
+				setLoading(false);
 			} catch (error) {
 				toast.error(error.response.data);
 			}
@@ -58,6 +57,12 @@ const Login = () => {
 			});
 		}
 	};
+
+	useEffect(() => {
+		if (isUserLoggedIn) {
+			navigate('/dashboard');
+		}
+	}, []);
 
 	return (
 		<div className={`flex justify-center content-center  my-5 mx-3`}>
@@ -84,8 +89,8 @@ const Login = () => {
 					/>
 					{formErrors.nameError.status
 						? <p className={`text-red-500 text-xs  mx-1`}>
-							{' '}{formErrors.nameError.error} *
-						</p>
+								{' '}{formErrors.nameError.error} *
+							</p>
 						: ''}
 				</label>
 
@@ -106,8 +111,8 @@ const Login = () => {
 					/>
 					{formErrors.emailError.status
 						? <p className={`text-red-500 text-xs  mx-1`}>
-							{' '}{formErrors.emailError.error} *
-						</p>
+								{' '}{formErrors.emailError.error} *
+							</p>
 						: ''}
 				</label>
 
@@ -128,8 +133,8 @@ const Login = () => {
 					/>
 					{formErrors.passwordError.status
 						? <p className={`text-red-500 text-xs  mx-1`}>
-							{' '}{formErrors.passwordError.error} *
-						</p>
+								{' '}{formErrors.passwordError.error} *
+							</p>
 						: ''}
 				</label>
 
@@ -150,29 +155,31 @@ const Login = () => {
 					/>
 					{formErrors.confirmPasswordError.status
 						? <p className={`text-red-500 text-xs  mx-1`}>
-							{' '}{formErrors.confirmPasswordError.error} *
-						</p>
+								{' '}{formErrors.confirmPasswordError.error} *
+							</p>
 						: ''}
 				</label>
 				{!loading
 					? <div className={`flex flex-col gap-5`}>
-						<button
-							className={`  mt-3 self-center text-md  bg-sky-500 hover:bg-sky-700 hover:text-white block w-28 h-10 rounded-full  `}
-							onClick={e => {
-								userLogIn(e);
-							}}>
-							Login
-						</button>
-						<p className={`text-xs text-center`}>
-							Already have an account{' '}
-
-							<span onClick={() => navigate(-1)} className={`text-sky-700 hover:cursor-pointer hover:text-sky-500`}>Click Here</span>
-
-						</p>
-					</div>
+							<button
+								className={`  mt-3 self-center text-md  bg-sky-500 hover:bg-sky-700 hover:text-white block w-28 h-10 rounded-full  `}
+								onClick={e => {
+									userLogIn(e);
+								}}>
+								Login
+							</button>
+							<p className={`text-xs text-center`}>
+								Already have an account{' '}
+								<span
+									onClick={() => navigate(-1)}
+									className={`text-sky-700 hover:cursor-pointer hover:text-sky-500`}>
+									Click Here
+								</span>
+							</p>
+						</div>
 					: <div className=" flex justify-center">
-						<Loader message={'login in progress'} />
-					</div>}
+							<Loader message={'login in progress'} />
+						</div>}
 			</div>
 		</div>
 	);

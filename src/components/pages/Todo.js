@@ -11,11 +11,10 @@ import { validateTaskData } from '../user/ValidateData';
 import { useDispatch, useSelector } from 'react-redux';
 import { setTotalTask } from '../../redux/userSlice';
 import { setAllTasks, updateTasks } from '../../redux/todoSclice';
-
-
+import { all } from 'axios';
 
 const Todo = () => {
-	const dispatch = useDispatch()
+	const dispatch = useDispatch();
 	const [newTask, setNewTask] = useState({
 		title: '',
 		description: '',
@@ -39,14 +38,14 @@ const Todo = () => {
 	};
 	const [taskErrors, setTaskErrors] = useState(initialErrors);
 
-
-
 	const [loading, setLoading] = useState({
 		create: false,
 		delete: false
 	});
 
-	const allTasks = useSelector(state => state.taskReducer.tasks)
+	const allTasks = useSelector(state => state.taskReducer.data);
+	const totalTasks = useSelector(state => state.user.data.totalTasks);
+
 	const location = useLocation();
 
 	const createNewTask = async e => {
@@ -59,10 +58,10 @@ const Todo = () => {
 				const response = await createTask(newTask);
 				toast.success(response.data.message);
 
-				dispatch(updateTasks(response.data.task))
+				dispatch(updateTasks(response.data.task));
+				dispatch(setTotalTask(totalTasks + 1));
 				setLoading({ ...loading, create: false });
 			} catch (error) {
-
 				toast.error(error.response.data);
 			}
 		} else {
@@ -75,8 +74,8 @@ const Todo = () => {
 			return value._id !== deletedTaskId;
 		});
 
-		dispatch(setAllTasks(filteredTask))
-
+		dispatch(setAllTasks(filteredTask));
+		dispatch(setTotalTask(totalTasks - 1));
 	};
 
 	const getNewTask = e => {
@@ -92,12 +91,11 @@ const Todo = () => {
 		try {
 			const response = await deleteAtask(taskId);
 			setShowModel(false);
-			setLoading({ ...loading, delete: false })
+			setLoading({ ...loading, delete: false });
 
 			const deletedTaskId = response.data.deletedTodoItem._id;
 			filterItemsAfterDeleting(deletedTaskId);
 			toast.success(response.data.message);
-
 		} catch (error) {
 			toast.error(error.response.data);
 		}
@@ -107,9 +105,8 @@ const Todo = () => {
 		try {
 			const tasks = await getAllTasks();
 
-
-			dispatch(setAllTasks(tasks.data.tasks))
-			dispatch(setTotalTask(tasks.data.totalTasks))
+			dispatch(setAllTasks(tasks.data.tasks));
+			dispatch(setTotalTask(tasks.data.totalTasks));
 		} catch (error) {
 			toast.error(error.responose.data);
 		}
@@ -120,7 +117,7 @@ const Todo = () => {
 	}, []);
 
 	return (
-		<div className={`flex flex-col h-full  items-center mt-2`}>
+		<div className={`flex flex-col h-full  items-center my-4`}>
 			<ToastContainer />
 			<div className={`flex flex-col  md:flex-row   p-10 gap-4 `}>
 				{/* Title input section */}
@@ -140,8 +137,8 @@ const Todo = () => {
 					/>
 					{taskErrors.titleError.status
 						? <p className={`text-red-500 text-xs  mx-1`}>
-							{taskErrors.titleError.error} *
-						</p>
+								{taskErrors.titleError.error} *
+							</p>
 						: ''}
 				</label>
 
@@ -163,8 +160,8 @@ const Todo = () => {
 					/>
 					{taskErrors.descriptionError.status
 						? <p className={`text-red-500 text-xs  mx-1`}>
-							{taskErrors.descriptionError.error} *
-						</p>
+								{taskErrors.descriptionError.error} *
+							</p>
 						: ''}
 				</label>
 
@@ -173,8 +170,8 @@ const Todo = () => {
 					className={`  mt-5  bg-sky-500 hover:bg-sky-700 hover:text-white block w-28 h-10 rounded-full self-center `}
 					disable={`${loading.create}`}>
 					{!taskErrors.titleError.status &&
-						!taskErrors.descriptionError.status &&
-						loading.create
+					!taskErrors.descriptionError.status &&
+					loading.create
 						? 'Creating'
 						: 'Create'}
 				</button>
@@ -182,7 +179,7 @@ const Todo = () => {
 
 			<div className={`  mb-5 p-5 lg:border-2 rounded-md `}>
 				<div
-					className={`pr-5 pl-5   bg-slate-900 text-white p-2 rounded-t-md hidden md:flex md:gap-24 lg:gap-48`}>
+					className={`pr-5 pl-5   bg-slate-900 text-white p-2 rounded-t-md hidden md:flex md:gap-24 lg:gap-60`}>
 					<h1>S.No</h1>
 					<h1>Title</h1>
 					<h1>Description</h1>
@@ -190,68 +187,65 @@ const Todo = () => {
 					<h1>Actions</h1>
 				</div>
 				<div>
-
-
 					{showModel.status
 						? <div className={` mt-2 `}>
-							<div className={` flex justify-center `}>
-								<div
-									className={`max-w-xl m-2 p-3 border-2 border-red-500 rounded-lg shadow-md  shadow-red-500/50`}>
-									<div className="flex flex-col gap-5   m-0 rounded-lg ">
-										<div className={`flex justify-end  mt-0`}>
-											<Link to={`#${showModel.redirectId}`}>
-												<TfiClose
-													className={` text-emerald-300 hover:text-red-500  `}
-													onClick={() => {
-														setShowModel(false);
-													}}
-												/>
-											</Link>
-										</div>
-										<h3>Are you sure you want to delete This Task</h3>
-										<div className={`flex justify-evenly `}>
-											<Link
-												to={`${location.pathname}#${showModel.redirectId -
-													1}`}>
-												<button
-													className={`border-2 px-3 py-1 rounded-lg bg-red-700 hover:bg-red-500`}
-													onClick={() => deleteTask(showModel.taskId)}
-													disabled={loading.delete}>
-													{loading.delete ? 'Deleting' : 'Yes'}
-												</button>
-											</Link>
-											{loading.delete === false
-												? <Link to={`#${showModel.redirectId}`}>
+								<div className={` flex justify-center `}>
+									<div
+										className={`max-w-xl m-2 p-3 border-2 border-red-500 rounded-lg shadow-md  shadow-red-500/50`}>
+										<div className="flex flex-col gap-5   m-0 rounded-lg ">
+											<div className={`flex justify-end  mt-0`}>
+												<Link to={`#${showModel.redirectId}`}>
+													<TfiClose
+														className={` text-emerald-300 hover:text-red-500  `}
+														onClick={() => {
+															setShowModel(false);
+														}}
+													/>
+												</Link>
+											</div>
+											<h3>Are you sure you want to delete This Task</h3>
+											<div className={`flex justify-evenly `}>
+												<Link
+													to={`${location.pathname}#${showModel.redirectId -
+														1}`}>
 													<button
-														className={`border-2 px-3 py-1 rounded-lg bg-green-700 hover:bg-green-400`}
-														onClick={() => setShowModel(false)}>
-														No
+														className={`border-2 px-3 py-1 rounded-lg bg-red-700 hover:bg-red-500`}
+														onClick={() => deleteTask(showModel.taskId)}
+														disabled={loading.delete}>
+														{loading.delete ? 'Deleting' : 'Yes'}
 													</button>
 												</Link>
-												: ''}
+												{loading.delete === false
+													? <Link to={`#${showModel.redirectId}`}>
+															<button
+																className={`border-2 px-3 py-1 rounded-lg bg-green-700 hover:bg-green-400`}
+																onClick={() => setShowModel(false)}>
+																No
+															</button>
+														</Link>
+													: ''}
+											</div>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
 						: <div
-							className={` p-2  lg:border-y-2  lg:border-b-2  rounded-b-md lg:bg-slate-50 `}>
-							{allTasks
-								? allTasks.map((value, index) => {
-									return (
-										<ShowTodo
-											key={value._id}
-											task={{ value, index }}
-											setShowModel={setShowModel}
-											initialErrors={initialErrors}
-
-										/>
-									);
-								})
-								: <div className={`flex justify-center`}>
-									<Loader message={'Loading Tasks'} />
-								</div>}
-						</div>}
+								className={` p-2  lg:border-y-2  lg:border-b-2  rounded-b-md lg:bg-slate-50 `}>
+								{allTasks
+									? allTasks.map((value, index) => {
+											return (
+												<ShowTodo
+													key={value._id}
+													task={{ value, index }}
+													setShowModel={setShowModel}
+													initialErrors={initialErrors}
+												/>
+											);
+										})
+									: <div className={`flex justify-center`}>
+											<Loader message={'Loading Tasks'} />
+										</div>}
+							</div>}
 				</div>
 			</div>
 		</div>
@@ -259,4 +253,3 @@ const Todo = () => {
 };
 
 export default Todo;
-

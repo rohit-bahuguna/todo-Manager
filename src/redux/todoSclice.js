@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-	tasks: []
+	data: []
 };
 
 export const todoSlice = createSlice({
@@ -9,10 +9,11 @@ export const todoSlice = createSlice({
 	initialState,
 	reducers: {
 		setAllTasks: (state, action) => {
-			state.tasks = [...action.payload];
+			state.data = [...action.payload];
 		},
 		updateTasks: (state, action) => {
-			state.tasks = [...state.tasks, action.payload];
+			console.log(action.payload);
+			state.data = [action.payload, ...state.data];
 		}
 	}
 });

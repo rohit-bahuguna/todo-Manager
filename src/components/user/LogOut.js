@@ -13,9 +13,7 @@ const LogOut = () => {
 		try {
 			const response = await logOut();
 			toast.success(response.data.message);
-			localStorage.setItem('name', '')
-			localStorage.setItem('email', '')
-			localStorage.setItem('status', false)
+			
 			dispatch(logout())
 
 			navigate('/');

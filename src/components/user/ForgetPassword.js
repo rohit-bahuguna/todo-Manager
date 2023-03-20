@@ -40,17 +40,18 @@ const ForgetPassword = () => {
     const forgetUserPassword = async () => {
 
         const { success, errors } = validateEmail(email);
-        console.log(success, errors);
+       
         if (success) {
             setLoading(true)
             try {
                 const response = await sendForgetPasswordEmail(email)
+                setEmail('')
                 setLoading(false)
                 toast.success(response.data.message)
                 setSuccess(true)
-                console.log(response);
-            } catch (error) {
               
+            } catch (error) {
+              setEmail('')
                 toast.error(error.response.data)
                 setLoading(false)
             }

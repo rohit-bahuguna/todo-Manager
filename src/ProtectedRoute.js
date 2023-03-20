@@ -1,22 +1,15 @@
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
-import { Outlet, Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { Outlet, Navigate, useLocation } from 'react-router-dom';
 
 const ProtectedRoute = () => {
+	const location = useLocation();
+	const userLoginStatus = useSelector(state => state.user.data.loginStatus);
+	console.log(userLoginStatus);
+	return userLoginStatus === true
+		? <Outlet />
+		: <Navigate to="/" state={{ from: location }} replace />;
+};
 
-    const navigate = useNavigate()
-    const location = useLocation()
-    const userLoginStatus = useSelector(state => state.userReducer.user.loginStatus)
-    useEffect(() => {
-        if (userLoginStatus === false) {
-            navigate('/')
-        }
-    }, [])
-
-    return (
-        userLoginStatus === true ? <Outlet /> : ''
-    )
-}
-
-export default ProtectedRoute
+export default ProtectedRoute;

@@ -57,6 +57,7 @@ export const Verify = async token => {
 
 export const sendForgetPasswordEmail = async email => {
 	const url = `${baseUrl}/forgetpasswordmail`;
+	console.log(email);
 	return await axios.post(
 		url,
 		{ email },

@@ -5,12 +5,12 @@ import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Loader from '../comman/Loader';
-import { login, setDataAfterRefresh } from '../../redux/userSlice';
+import { login } from '../../redux/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 const SignIn = () => {
-	const loggedInUserData = useSelector(state => state.userReducer.user);
 	const dispatch = useDispatch();
+	const isUserLoggedIn = useSelector(state => state.user.data.loginStatus);
 	const [userData, setUserData] = useState({
 		email: '',
 		password: ''
@@ -30,8 +30,10 @@ const SignIn = () => {
 		setFormErrors({ ...initialErrors });
 	};
 	const navigate = useNavigate();
+
 	const userSignIn = async e => {
 		e.preventDefault();
+
 		const { success, errors } = validateUserData(userData);
 		if (success) {
 			setLoading(true);
@@ -40,14 +42,10 @@ const SignIn = () => {
 					toast.success(response.data.message);
 
 					setLoading(false);
-					localStorage.setItem('name', response.data.user.name);
-					localStorage.setItem('email', response.data.user.email);
-					localStorage.setItem('status', response.data.success);
+
 					dispatch(login(response.data.user));
 
-					setTimeout(() => {
-						navigate(`/dashboard`);
-					}, 1000);
+					navigate('/dashboard');
 				})
 				.catch(error => {
 					setLoading(false);
@@ -60,7 +58,11 @@ const SignIn = () => {
 			});
 		}
 	};
-
+	useEffect(() => {
+		if (isUserLoggedIn) {
+			navigate('/dashboard');
+		}
+	}, []);
 	return (
 		<div className={`flex  justify-center my-5 mx-3`}>
 			<ToastContainer />

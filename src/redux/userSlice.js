@@ -1,42 +1,48 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
-    user: {
-        name: '',
-        email: '',
-        totalTasks: '',
-        loginStatus: false,
-        verified: false
-    }
-}
+	data: {
+		totalTasks: 0,
+		loginStatus: false,
+		verified: false
+	}
+};
 
 export const userSlice = createSlice({
-    name: 'user',
-    initialState,
+	name: 'user',
+	initialState,
 
-    reducers: {
-        login: (state, action) => {
-            const { payload: { name, email, verified } } = action
+	reducers: {
+		login: (state, action) => {
+			const { payload } = action;
 
-            console.log();
-            state.user = { ...state, name, email, verified, loginStatus: true }
-        },
-        logout: (state) => {
-            state.user = { ...initialState }
-        },
-        setTotalTask: (state, action) => {
-            state.user.totalTasks = action.payload
-        },
-        setDataAfterRefresh: (state, action) => {
-            const { payload: { name, email, loginStatus } } = action
-            state.user = { ...state, name, email, loginStatus }
-        },
-        setVerificationStatus: (state, action) => {
-            state.user.verified = action.payload
-        }
-    }
-}
-)
+			state.data = { ...payload, loginStatus: true, totalTasks: 0 };
+		},
+		logout: state => {
+			state.data = {
+				totalTasks: 0,
+				loginStatus: false,
+				verified: false
+			};
+		},
+		setTotalTask: (state, action) => {
+			state.data = { ...state.data, totalTasks: action.payload };
+		},
+		setDataAfterRefresh: (state, action) => {
+			const { payload: { name, email, loginStatus } } = action;
+			state.data = { ...state, name, email, loginStatus };
+		},
+		setVerificationStatus: (state, action) => {
+			state.data = { ...state.data, verified: action.payload };
+		}
+	}
+});
 
-export const { login, logout, setTotalTask, setDataAfterRefresh, setVerificationStatus } = userSlice.actions
+export const {
+	login,
+	logout,
+	setTotalTask,
+	setDataAfterRefresh,
+	setVerificationStatus
+} = userSlice.actions;
 
-export default userSlice.reducer
+export default userSlice.reducer;

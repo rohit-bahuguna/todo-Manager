@@ -35,7 +35,7 @@ const ShowTodo = ({ task, setShowModel, initialErrors, setTodoModel }) => {
 		if (success) {
 			try {
 				const updatedData = await updateAtask(taskData);
-			
+
 				toast.success(updatedData.data.message);
 				setLoading(false);
 				setTaskData({ ...taskData, edited: false });
@@ -49,16 +49,20 @@ const ShowTodo = ({ task, setShowModel, initialErrors, setTodoModel }) => {
 	};
 
 	return (
-		<div id={index + 1} onClick={() => {
-			setTodoModel(true)
-		}}>
-			<div className="px-3 flex flex-col gap-5 border-2 rounded-lg mb-2 text-black p-2   lg:border-0 lg:gap-36 lg:border-t-2 md:flex-row lg:rounded-none lg:mb-0">
-				<div className='hidden lg:inline'>
+		<div
+			id={index + 1}
+			onClick={() => {
+				setTodoModel(true);
+			}}>
+			<div className="px-3 flex flex-col gap-5 border-2 rounded-lg mb-2 text-black p-2   lg:border-0 lg:gap-36 lg:border-t-2 md:flex-row lg:rounded-none lg:mb-0 ">
+				<div className="hidden lg:inline   w-12">
 					{index + 1}
 				</div>
 				<div>
 					<lable>
-						<span className=' md:hidden block text-sm font-medium text-slate-700' >Title</span>
+						<span className=" md:hidden block text-sm font-medium text-slate-700">
+							Title
+						</span>
 						<textarea
 							className="mt-1 px-3 py-2 bg-slate-50 border  border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1 disabled:border-none"
 							placeholder="Enter Title Here"
@@ -79,21 +83,21 @@ const ShowTodo = ({ task, setShowModel, initialErrors, setTodoModel }) => {
 
 					{taskError.titleError.status
 						? <p className={`text-red-500 text-xs  mx-1`}>
-							{taskError.titleError.error} *
-						</p>
+								{taskError.titleError.error} *
+							</p>
 						: ''}
 				</div>
 				<div>
 					<lable>
-						<span className='md:hidden block text-sm font-medium text-slate-700' >Description</span>
+						<span className="md:hidden block text-sm font-medium text-slate-700">
+							Description
+						</span>
 						<textarea
-
 							className="mt-1 px-3 py-2 bg-slate-50 border  border-slate-300 placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 block w-full rounded-md sm:text-sm focus:ring-1 
 							
 							disabled:border-none"
 							placeholder="Enter Title Here"
 							type="text"
-
 							value={taskData.description}
 							disabled={dispaly}
 							onChange={e => {
@@ -109,18 +113,20 @@ const ShowTodo = ({ task, setShowModel, initialErrors, setTodoModel }) => {
 					</lable>
 					{taskError.descriptionError.status
 						? <p className={`text-red-500 text-xs  mx-1`}>
-							{taskError.descriptionError.error} *
-						</p>
+								{taskError.descriptionError.error} *
+							</p>
 						: ''}
 				</div>
 
 				<div>
-					<span className=' md:hidden block text-sm font-medium text-slate-700' >Status</span>
+					<span className=" md:hidden block text-sm font-medium text-slate-700">
+						Status
+					</span>
 					{taskData.status === 'completed'
 						? <IoCloudDoneSharp className={`text-green-500   text-4xl `} />
 						: <MdPendingActions className={`text-yellow-500   text-4xl `} />}
 				</div>
-				<div className={`flex gap-5`}>
+				<div className={`flex gap-5  `}>
 					<input
 						className={`text-green-500   text-4xl hover:cursor-pointer`}
 						type="checkbox"
@@ -156,17 +162,17 @@ const ShowTodo = ({ task, setShowModel, initialErrors, setTodoModel }) => {
 					<div>
 						{taskData.edited
 							? <div>
-								<button
-									onClick={updatedTask}
-									className="bg-green-500 hover:bg-green-700 hover:text-white block w-auto px-2 h-8 rounded-full hover:cursor-pointer"
-									desabled={`${loading}`}>
-									{!taskError.titleError.status &&
+									<button
+										onClick={updatedTask}
+										className="bg-green-500 hover:bg-green-700 hover:text-white block w-auto px-2 h-8 rounded-full hover:cursor-pointer"
+										desabled={`${loading}`}>
+										{!taskError.titleError.status &&
 										!taskError.descriptionError.status &&
 										loading
-										? 'Updating'
-										: 'Save'}
-								</button>
-							</div>
+											? 'Updating'
+											: 'Save'}
+									</button>
+								</div>
 							: ''}
 					</div>
 				</div>
@@ -176,5 +182,3 @@ const ShowTodo = ({ task, setShowModel, initialErrors, setTodoModel }) => {
 };
 
 export default ShowTodo;
-
-
