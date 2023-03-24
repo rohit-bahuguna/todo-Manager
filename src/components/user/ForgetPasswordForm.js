@@ -7,16 +7,16 @@ import { forgetUserPassword } from '../../utils/userAPI'
 import Loader from '../comman/Loader'
 
 const ForgetPasswordForm = () => {
-    const { token , id } = useParams()
+    const { token, id } = useParams()
     const [userPassword, setUserPassword] = useState({
         password: '',
         confirmPassword: ''
-        
+
     })
     const initialErrors = {
         passwordError: { status: false, error: '' },
         confirmPasswordError: { status: false, error: '' },
-        resetPasswordError : {status : false , error: ''}
+        resetPasswordError: { status: false, error: '' }
     }
     const [success, setSuccess] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -71,7 +71,7 @@ const ForgetPasswordForm = () => {
         if (success) {
             setLoading(true)
             try {
-                const response = await forgetUserPassword(token, id , userPassword.password)
+                const response = await forgetUserPassword(token, id, userPassword.password)
                 setLoading(false)
                 toast.success(response.data.message)
                 setSuccess(true)
@@ -79,15 +79,15 @@ const ForgetPasswordForm = () => {
                     navigate('/')
                 }, 5000)
             } catch (error) {
-                 setLoading(false)
-             
+                setLoading(false)
+
                 toast.error("reset password link expire")
-                
+
                 setTimeout(() => {
                     navigate('/')
-                },3000)
-               
-               
+                }, 3000)
+
+
             }
         } else {
             setPasswordError({ ...passwordError, ...errors })
@@ -96,7 +96,7 @@ const ForgetPasswordForm = () => {
 
     }
 
-   
+
 
 
 
