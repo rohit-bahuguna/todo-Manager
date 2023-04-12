@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import Layout from '../comman/Layout';
+import ProjectForm from '../comman/forms/ProjectForm';
+import { Link } from 'react-router-dom';
+import Button from '../comman/Custom/Button';
 const Projects = () => {
 	const [allProjects, setAllProjects] = useState([]);
 	const [projectType, setProjectType] = useState('All Projects');
@@ -14,11 +17,16 @@ const Projects = () => {
 							<option value="Trashed Project">Trashed Project</option>
 						</select>
 
-						<button className=" border bg-sky-500 px-5 py-2 text-white rounded-full">
-							New Project
-						</button>
+
+
+						<Button text={"New Project"} to={"/create-project"}
+							size={"text-lg"} color={"bg-sky-400"} />
+
 					</div>
-					<div>projects</div>
+					<div>
+						projects
+						<div />
+					</div>
 				</div>
 			</div>
 		</Layout>

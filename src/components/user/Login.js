@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Loader from '../comman/Loader';
-import { login } from '../../redux/userSlice';
+import { login } from '../../redux/features/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Login = () => {
@@ -40,15 +40,16 @@ const Login = () => {
 			try {
 				const response = await logIn(userData);
 
-				toast.success(response.data.message);
 				dispatch(login(response.data.user));
-
+				toast.success(response.data.message, {
+					autoClose: 1000
+				});
 				setTimeout(() => {
-					navigate(`/dashboard`);
+					navigate(`/create-workspace`);
 				}, 1000);
 				setLoading(false);
 			} catch (error) {
-				toast.error(error.response.data);
+				toast.error(error.response.data.message);
 			}
 		} else {
 			setFormErrors({

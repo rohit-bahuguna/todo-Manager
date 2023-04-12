@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
-import { setVerificationStatus } from '../../redux/userSlice';
+import { setVerificationStatus } from '../../redux/features/userSlice';
 import { Verify } from '../../utils/userAPI';
 import Loader from '../comman/Loader';
 
@@ -27,7 +27,7 @@ const VerifyUser = () => {
 				navigate('/');
 			}, 5000);
 		} catch (error) {
-			toast.error(error.response.data);
+			toast.error(error.response.data.message);
 			setSuccess({
 				message: 'verification failed please try again',
 				color: 'red'

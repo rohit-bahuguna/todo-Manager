@@ -14,7 +14,7 @@ const Profile = () => {
 			console.log(response);
 			toast.success(response.data.message);
 		} catch (error) {
-			toast.error(error.response.data);
+			toast.error(error.response.data.message);
 		}
 	};
 

@@ -2,7 +2,7 @@ import axios from 'axios';
 const baseUrl = `${process.env.REACT_APP_API_URL}/user`;
 
 export const logIn = async userData => {
-	const url = `${baseUrl}/login`;
+	const url = `${baseUrl}/signup`;
 
 	return await axios.post(
 		url,

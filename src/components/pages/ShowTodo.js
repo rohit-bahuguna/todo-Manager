@@ -41,7 +41,7 @@ const ShowTodo = ({ task, setShowModel, initialErrors, setTodoModel }) => {
 				setTaskData({ ...taskData, edited: false });
 				setDispaly(true);
 			} catch (error) {
-				toast.error(error.response.data);
+				toast.error(error.response.data.message);
 			}
 		} else {
 			setTaskError({ ...taskError, ...errors });

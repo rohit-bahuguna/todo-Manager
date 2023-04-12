@@ -20,6 +20,7 @@ import Support from './components/support/Support';
 import ChatRoom from './components/support/Room';
 import Navbar from "./components/comman/Navbar"
 import { BsChatSquareTextFill } from 'react-icons/bs';
+import WorkspaceInivation from './components/workspaces/WorkspaceInivation';
 
 function App() {
 
@@ -40,7 +41,13 @@ function App() {
 						path="forgetpassword/:token/:id"
 						element={<ForgetPasswordForm />}
 					/>
+					<Route
+					path="/workspace-ivitation/:workspaceId/:token"
+					element={<WorkspaceInivation />}
+					/>
 
+					<Route exact path="/join-workspace/signin/:email" element={<SignIn />} />
+					
 					<Route element={<ProtectedRoute />}>
 						<Route path='*' element={<Home />} />
 					</Route>

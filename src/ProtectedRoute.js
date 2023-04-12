@@ -5,9 +5,10 @@ import { Outlet, Navigate, useLocation } from 'react-router-dom';
 
 const ProtectedRoute = () => {
 	const location = useLocation();
-	const userLoginStatus = useSelector(state => state.user.data.loginStatus);
-	console.log(userLoginStatus);
-	return userLoginStatus === true
+	const { data } = useSelector(state => state.user);
+
+	console.log(data);
+	return data.loginStatus === true
 		? <Outlet />
 		: <Navigate to="/" state={{ from: location }} replace />;
 };

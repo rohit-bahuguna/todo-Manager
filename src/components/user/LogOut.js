@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import { logOut } from '../../utils/userAPI';
 
-import { logout } from "../../redux/userSlice"
+import { logout } from "../../redux/features/userSlice"
 import { useDispatch } from 'react-redux';
 
 const LogOut = () => {
@@ -19,7 +19,7 @@ const LogOut = () => {
 			navigate('/');
 
 		} catch (error) {
-			toast.error(error.response.data);
+			toast.error(error.response.data.message);
 		}
 	};
 	return <> <ToastContainer /> <button

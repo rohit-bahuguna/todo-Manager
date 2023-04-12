@@ -9,8 +9,8 @@ import { useLocation } from 'react-router-dom';
 import Loader from '../comman/Loader';
 import { validateTaskData } from '../user/ValidateData';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTotalTask } from '../../redux/userSlice';
-import { setAllTasks, updateTasks } from '../../redux/todoSclice';
+import { setTotalTask } from '../../redux/features/userSlice';
+import { setAllTasks, updateTasks } from '../../redux/features/todoSclice';
 import Layout from '../comman/Layout';
 
 const Todo = () => {
@@ -63,7 +63,7 @@ const Todo = () => {
 				dispatch(setTotalTask(totalTasks + 1));
 				setLoading({ ...loading, create: false });
 			} catch (error) {
-				toast.error(error.response.data);
+				toast.error(error.response.data.message);
 			}
 		} else {
 			setTaskErrors({ ...taskErrors, ...errors });
@@ -98,7 +98,7 @@ const Todo = () => {
 			filterItemsAfterDeleting(deletedTaskId);
 			toast.success(response.data.message);
 		} catch (error) {
-			toast.error(error.response.data);
+			toast.error(error.response.data.message);
 		}
 	};
 
@@ -118,7 +118,6 @@ const Todo = () => {
 	}, []);
 
 	return (
-
 		<Layout>
 			<div className={`flex flex-col h-full   my-4`}>
 				<ToastContainer />
@@ -140,8 +139,8 @@ const Todo = () => {
 						/>
 						{taskErrors.titleError.status
 							? <p className={`text-red-500 text-xs  mx-1`}>
-								{taskErrors.titleError.error} *
-							</p>
+									{taskErrors.titleError.error} *
+								</p>
 							: ''}
 					</label>
 
@@ -163,8 +162,8 @@ const Todo = () => {
 						/>
 						{taskErrors.descriptionError.status
 							? <p className={`text-red-500 text-xs  mx-1`}>
-								{taskErrors.descriptionError.error} *
-							</p>
+									{taskErrors.descriptionError.error} *
+								</p>
 							: ''}
 					</label>
 
@@ -173,8 +172,8 @@ const Todo = () => {
 						className={`  mt-5  bg-sky-500 hover:bg-sky-700 hover:text-white block w-28 h-10 rounded-full self-center `}
 						disable={`${loading.create}`}>
 						{!taskErrors.titleError.status &&
-							!taskErrors.descriptionError.status &&
-							loading.create
+						!taskErrors.descriptionError.status &&
+						loading.create
 							? 'Creating'
 							: 'Create'}
 					</button>
@@ -192,68 +191,67 @@ const Todo = () => {
 					<div>
 						{showModel.status
 							? <div className={` mt-2 `}>
-								<div className={` flex justify-center `}>
-									<div
-										className={`max-w-xl m-2 p-3 border-2 border-red-500 rounded-lg shadow-md  shadow-red-500/50`}>
-										<div className="flex flex-col gap-5   m-0 rounded-lg ">
-											<div className={`flex justify-end  mt-0`}>
-												<Link to={`#${showModel.redirectId}`}>
-													<TfiClose
-														className={` text-emerald-300 hover:text-red-500  `}
-														onClick={() => {
-															setShowModel(false);
-														}}
-													/>
-												</Link>
-											</div>
-											<h3>Are you sure you want to delete This Task</h3>
-											<div className={`flex justify-evenly `}>
-												<Link
-													to={`${location.pathname}#${showModel.redirectId -
-														1}`}>
-													<button
-														className={`border-2 px-3 py-1 rounded-lg bg-red-700 hover:bg-red-500`}
-														onClick={() => deleteTask(showModel.taskId)}
-														disabled={loading.delete}>
-														{loading.delete ? 'Deleting' : 'Yes'}
-													</button>
-												</Link>
-												{loading.delete === false
-													? <Link to={`#${showModel.redirectId}`}>
+									<div className={` flex justify-center `}>
+										<div
+											className={`max-w-xl m-2 p-3 border-2 border-red-500 rounded-lg shadow-md  shadow-red-500/50`}>
+											<div className="flex flex-col gap-5   m-0 rounded-lg ">
+												<div className={`flex justify-end  mt-0`}>
+													<Link to={`#${showModel.redirectId}`}>
+														<TfiClose
+															className={` text-emerald-300 hover:text-red-500  `}
+															onClick={() => {
+																setShowModel(false);
+															}}
+														/>
+													</Link>
+												</div>
+												<h3>Are you sure you want to delete This Task</h3>
+												<div className={`flex justify-evenly `}>
+													<Link
+														to={`${location.pathname}#${showModel.redirectId -
+															1}`}>
 														<button
-															className={`border-2 px-3 py-1 rounded-lg bg-green-700 hover:bg-green-400`}
-															onClick={() => setShowModel(false)}>
-															No
+															className={`border-2 px-3 py-1 rounded-lg bg-red-700 hover:bg-red-500`}
+															onClick={() => deleteTask(showModel.taskId)}
+															disabled={loading.delete}>
+															{loading.delete ? 'Deleting' : 'Yes'}
 														</button>
 													</Link>
-													: ''}
+													{loading.delete === false
+														? <Link to={`#${showModel.redirectId}`}>
+																<button
+																	className={`border-2 px-3 py-1 rounded-lg bg-green-700 hover:bg-green-400`}
+																	onClick={() => setShowModel(false)}>
+																	No
+																</button>
+															</Link>
+														: ''}
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-							</div>
 							: <div
-								className={` p-2  lg:border-y-2  lg:border-b-2  rounded-b-md lg:bg-slate-50 `}>
-								{allTasks
-									? allTasks.map((value, index) => {
-										return (
-											<ShowTodo
-												key={value._id}
-												task={{ value, index }}
-												setShowModel={setShowModel}
-												initialErrors={initialErrors}
-											/>
-										);
-									})
-									: <div className={`flex justify-center`}>
-										<Loader message={'Loading Tasks'} />
-									</div>}
-							</div>}
+									className={` p-2  lg:border-y-2  lg:border-b-2  rounded-b-md lg:bg-slate-50 `}>
+									{allTasks
+										? allTasks.map((value, index) => {
+												return (
+													<ShowTodo
+														key={value._id}
+														task={{ value, index }}
+														setShowModel={setShowModel}
+														initialErrors={initialErrors}
+													/>
+												);
+											})
+										: <div className={`flex justify-center`}>
+												<Loader message={'Loading Tasks'} />
+											</div>}
+								</div>}
 					</div>
 				</div>
 			</div>
 		</Layout>
-
 	);
 };
 

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAssignedTask } from '../../redux/assignedTaskSlice';
+import { setAssignedTask } from '../../redux/features/assignedTaskSlice';
 import { allAssignedTasks } from '../../utils/todoAPI';
 import ShowAssignedTask from './ShowAssignedTask';
 

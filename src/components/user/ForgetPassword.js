@@ -52,7 +52,7 @@ const ForgetPassword = () => {
               
             } catch (error) {
               setEmail('')
-                toast.error(error.response.data)
+                toast.error(error.response.data.message)
                 setLoading(false)
             }
         } else {

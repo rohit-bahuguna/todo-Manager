@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { store, persistor } from './app/store';
+import { store, persistor } from './redux/app/store';
 import { Provider } from 'react-redux';
 import App from './App';
 import { PersistGate } from 'redux-persist/integration/react';
